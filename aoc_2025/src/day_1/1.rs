@@ -1,12 +1,12 @@
-use std::io;
-use std::io::prelude::*;
-use std::io::BufReader;
 use std::fs::File;
+use std::io;
+use std::io::BufReader;
+use std::io::prelude::*;
 
 #[derive(Debug)]
 struct Ins {
     dir: char,
-    dist: i32
+    dist: i32,
 }
 
 fn main() -> io::Result<()> {
@@ -15,7 +15,7 @@ fn main() -> io::Result<()> {
 
     let mut input: Vec<Ins> = Vec::new();
     for line in reader.lines() {
-        let mut ins = Ins {dir: '\0', dist: 0};
+        let mut ins = Ins { dir: '\0', dist: 0 };
         let mut dist = String::new();
         for c in line?.chars() {
             if c.is_alphabetic() {

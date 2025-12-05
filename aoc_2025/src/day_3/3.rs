@@ -1,10 +1,11 @@
-use std::io;
-use std::io::prelude::*;
-use std::io::BufReader;
 use std::fs::File;
+use std::io;
+use std::io::BufReader;
+use std::io::prelude::*;
 
 fn max_jolt_n(chars: &Vec<char>, size: usize) -> u64 {
-    let nums: Vec<u64> = chars.iter()
+    let nums: Vec<u64> = chars
+        .iter()
         .map(|&c| c.to_digit(10).unwrap() as u64)
         .collect();
 
@@ -15,7 +16,8 @@ fn max_jolt_n(chars: &Vec<char>, size: usize) -> u64 {
 
     for i in 0..size {
         let end = start + ((n as i64 - start as i64) - size as i64 + i as i64) as usize;
-        (max_idx, max_val) = nums[start..=end].iter()
+        (max_idx, max_val) = nums[start..=end]
+            .iter()
             .enumerate()
             .max_by(|(idx_a, val_a), (idx_b, val_b)| {
                 val_a.cmp(val_b).then_with(|| idx_b.cmp(idx_a))
@@ -43,5 +45,3 @@ fn main() -> io::Result<()> {
     println!("Part-2: {}", total_jolts_p2);
     Ok(())
 }
-
-

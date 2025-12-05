@@ -1,7 +1,7 @@
-use std::io;
-use std::io::prelude::*;
-use std::io::BufReader;
 use std::fs::File;
+use std::io;
+use std::io::BufReader;
+use std::io::prelude::*;
 
 fn is_invalid(id: u64) -> u64 {
     let chars: Vec<char> = id.to_string().chars().collect();
@@ -52,7 +52,8 @@ fn main() -> io::Result<()> {
     let mut p1_inv_id_sum = 0;
     let mut p2_inv_id_sum = 0;
     for idr in product_ids {
-        let (start, end) = idr.split_once("-")
+        let (start, end) = idr
+            .split_once("-")
             .map(|(l, r)| (l.parse::<u64>().unwrap(), r.parse::<u64>().unwrap()))
             .unwrap();
 
@@ -67,4 +68,3 @@ fn main() -> io::Result<()> {
     println!("Part-2: {}", p2_inv_id_sum);
     Ok(())
 }
-
