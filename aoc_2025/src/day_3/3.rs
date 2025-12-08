@@ -35,7 +35,7 @@ fn init_sparse_table(chars: &Vec<char>) -> Vec<Vec<(u32, usize)>> {
     st
 }
 
-fn max_jolt_n(chars: &Vec<char>, size: usize, st: &Vec<Vec<(u32, usize)>>) -> u64 {
+fn _max_jolt_n(chars: &Vec<char>, size: usize, st: &Vec<Vec<(u32, usize)>>) -> u64 {
     let nums: Vec<u64> = chars
         .iter()
         .map(|&c| c.to_digit(10).unwrap() as u64)
@@ -55,17 +55,43 @@ fn max_jolt_n(chars: &Vec<char>, size: usize, st: &Vec<Vec<(u32, usize)>>) -> u6
     result.join("").parse::<u64>().unwrap()
 }
 
+fn max_jolt_n_stack(chars: &Vec<char>, size: usize) -> u64 {
+    let nums: Vec<u64> = chars
+        .iter()
+        .map(|&c| c.to_digit(10).unwrap() as u64)
+        .collect();
+
+    let n = nums.len();
+    let mut result: u64 = 0;
+    let mut stack = Vec::new();
+    let mut removed = 0;
+
+    for num in nums {
+        while removed < n - size && !stack.is_empty() && *stack.last().unwrap() < num {
+            removed += 1;
+            stack.pop();
+        }
+        stack.push(num);
+    }
+
+    for i in 0..size {
+        result = result * 10 + stack[i];
+    }
+    result
+}
+
 fn main() -> io::Result<()> {
-    let f = File::open("src/day_3/3.in")?;
+    let f = File::open("src/day_3/3.ex")?;
     let reader = BufReader::new(f);
 
     let mut total_jolts_p1 = 0;
     let mut total_jolts_p2 = 0;
     for line in reader.lines() {
         let chars: Vec<char> = line.unwrap().chars().collect();
-        let st = init_sparse_table(&chars);
-        total_jolts_p1 += max_jolt_n(&chars, 2, &st);
-        total_jolts_p2 += max_jolt_n(&chars, 12, &st);
+        let _st = init_sparse_table(&chars);
+        total_jolts_p1 += max_jolt_n_stack(&chars, 2);
+        // total_jolts_p2 += max_jolt_n(&chars, 12, &st);
+        total_jolts_p2 += max_jolt_n_stack(&chars, 12);
     }
 
     println!("Part-1: {}", total_jolts_p1);
